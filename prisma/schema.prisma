@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Amenidades {
+  id          Int           @id @default(autoincrement())
+  nombre      String        @unique
+  Apartamento Apartamento[]
+}
+
+model Apartamento {
+  id                Int          @id @default(autoincrement())
+  nombre_edifcio    String
+  url_google_maps   String
+  fotos             Bytes[]
+  costo_alquiler    Decimal?
+  costo_incl_mant   Boolean?
+  area              Decimal
+  edad_edificio     Int?
+  nivel_apartamento Int
+  parqueos          Int
+  contactoId        Int
+  Contacto          Contacto     @relation(fields: [contactoId], references: [id])
+  Amenidades        Amenidades[]
+}
+
+model Contacto {
+  id          Int           @id @default(autoincrement())
+  nombre      String?
+  numero      String        @unique
+  propietario Boolean
+  Apartamento Apartamento[]
+}
